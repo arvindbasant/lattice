@@ -1,0 +1,31 @@
+.login {
+    background-color: rgba(0,160,233,.9);
+    height: 100vh;
+    span.brandName{
+        font-size: 4rem;
+        font-weight: 800;
+        font-family: 'pacifico';
+        font-style: italic;
+
+    }
+    .loginBox {
+        background-color: white;
+        height: 100%;
+        padding-top:200px;
+    }
+    Input, Button {
+        margin-top: 5px;
+        // border-radius: 15px;
+    }
+    Button {
+        float: right;
+    }
+}
+
+Input, Button {
+    margin-top: 5px !important;
+    // border-radius: 15px;
+}
+Button {
+    float: right;
+}

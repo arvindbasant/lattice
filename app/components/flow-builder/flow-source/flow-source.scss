@@ -1,0 +1,53 @@
+@import "../../../styles/colors";
+
+.widgetDock {
+  // border: 0.1rem solid $border-color;
+  width: 90%;
+  padding-top: 1.5rem;
+  margin-left: 5%;
+  height: 5.5rem;
+  .widgetItems {
+    display: inline-block;
+    overflow: hidden;
+    border: 0.05rem solid $border-color;
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+    padding-top: 0.6rem;
+    text-align: center;
+    .widgetTitle {
+      display: inline-block;
+      padding-left: 0.2rem;
+      border-radius: 3px;
+      font-size: .7rem;
+      font-weight: 600;
+      padding-right: 0.2rem;
+      position: absolute;
+      background-color: #ffffff;
+      border: 0.05rem solid $border-color;
+      top: 1.5rem;
+      text-transform: uppercase;
+      user-select: none;
+    }
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      li {
+        display: inline-block;
+        user-select: none;
+        margin: 0;
+        .widgetItem:hover {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+  .widgetItems:hover {
+    border-color: $border-color-dark;
+    // box-shadow: 0 1px 1px $border-color-dark;
+    .widgetTitle {
+      border-color: $border-color-dark;
+
+    }
+  }
+}
