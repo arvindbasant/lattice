@@ -128,12 +128,9 @@ export class CSVFileProcessor extends FileProcessor {
     });
     return colDefArr;
   }
-
-  // public readLines(start: number, end: number): Promise<string[][]> {
-  //
-  // }
 }
 
+// TODO: try type-check module 
 function getType(val: string): colType {
   const param = val.trim();
   if (param === 'true' || param === 'false') {

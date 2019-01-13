@@ -1,8 +1,9 @@
-const {app, BrowserWindow, Menu, shell} = require('electron');
+const { app, BrowserWindow, Menu, shell } = require('electron');
 
 let menu;
 let template;
 let mainWindow = null;
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
@@ -43,9 +44,7 @@ app.on('ready', () =>
         width: 1440,
         height: 900
       });
-      setTimeout(() => {
-        mainWindow.loadURL(`file://${__dirname}/app.html`);
-      }, 2000); // 1 second wasn't enough lol
+      mainWindow.loadURL(`file://${__dirname}/app.html`);
       mainWindow.webContents.on('did-finish-load', () => {
         mainWindow.show();
         mainWindow.focus();
@@ -58,7 +57,7 @@ app.on('ready', () =>
       if (process.env.NODE_ENV === 'development') {
         mainWindow.openDevTools();
         mainWindow.webContents.on('context-menu', (e, props) => {
-          const {x, y} = props;
+          const { x, y } = props;
 
           Menu.buildFromTemplate([{
             label: 'Inspect element',

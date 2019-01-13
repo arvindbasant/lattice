@@ -43,15 +43,15 @@ class FlowBuilder extends React.Component<FlowProps, any> {
     );
   }
 
-  private handleDrop(item: any) {
+  private handleDrop({item, pos}: any) {
     const widgetId: string = getRandomString();
     const widget: AnyWidget = {
       id: widgetId,
-      name: item.item.name,
-      category: item.item.category,
-      widgetRect: item.item.category === WidgetCategory.Transform ?
-        { point: { x: item.pos.x - 71 - 40, y: item.pos.y - 88 - 40 }, height: 40, width: 40 } :
-        { point: { x: item.pos.x - 71 - 60, y: item.pos.y - 88 - 25 }, height: 50, width: 120 },
+      name: item.name,
+      category: item.category,
+      widgetRect: item.category === WidgetCategory.Transform ?
+        { point: { x: pos.x - 71 - 40, y: pos.y - 88 - 40 }, height: 40, width: 40 } :
+        { point: { x: pos.x - 71 - 60, y: pos.y - 88 - 25 }, height: 50, width: 120 },
       destinations: []
     };
     this.props.dispatch(FLOW_ACTIONS.setFlow({ ...widget }));

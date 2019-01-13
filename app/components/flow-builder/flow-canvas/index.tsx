@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Dispatch } from 'redux';
 import { FlowActions, FLOW_ACTIONS } from '../../../store/flow/flow-actions';
-import { Point, Widget, WidgetCategory, WidgetRect } from '../../../store/flow/flow-types';
+import { Vector2D, Widget, WidgetCategory, WidgetRect } from '../../../store/flow/flow-types';
 import Import from './import';
 import { FlowPath } from './flow-path';
 import Persist from './persist';
@@ -14,7 +14,7 @@ interface FlowCanvasProps {
 
 interface FlowCanvasState {
   drawingLine: boolean;
-  points: Point[];
+  points: Vector2D[];
   drawn: boolean;
 }
 
@@ -36,8 +36,8 @@ class FlowCanvas extends React.PureComponent<FlowCanvasProps, FlowCanvasState> {
     const {drawingLine, points} = this.state;
     const allDestinations = widgets.map((item: Widget) => {
       const source = item.widgetRect.point;
-      const destinations: Array<{ id: string, point: Point }> = this.getDestinationDetails(item.destinations);
-      return destinations.map((detail: { id: string, point: Point }) => {
+      const destinations: Array<{ id: string, point: Vector2D }> = this.getDestinationDetails(item.destinations);
+      return destinations.map((detail: { id: string, point: Vector2D }) => {
         return (
           <FlowPath key={detail.id} points={this.getPoints(source, detail.point, item.category)} r={5}/>
         );
@@ -77,18 +77,18 @@ class FlowCanvas extends React.PureComponent<FlowCanvasProps, FlowCanvasState> {
     );
   }
 
-  public drawLine(widget: Widget, pointer: Point, isDrawing: boolean) {
+  public drawLine(widget: Widget, pointer: Vector2D, isDrawing: boolean) {
     this.setState(() => {
       return {
         drawingLine: isDrawing,
         points: this.getPoints(widget.widgetRect.point, pointer, widget.category, true),
       };
-    }, () => {
+    },            () => {
       this.drawLineOnCollision(widget, pointer);
     });
   }
 
-  private drawLineOnCollision(sourceWidget: Widget, pointer: Point) {
+  private drawLineOnCollision(sourceWidget: Widget, pointer: Vector2D) {
     const targetRect: WidgetRect = {point: pointer, width: 20, height: 20};
 
     const {widgets} = this.props;
@@ -117,8 +117,8 @@ class FlowCanvas extends React.PureComponent<FlowCanvasProps, FlowCanvasState> {
     );
   }
 
-  private getPoints(itemSource: Point, itemTarget: Point, type: WidgetCategory, isPointer?: boolean) {
-    const points: Point[] = [];
+  private getPoints(itemSource: Vector2D, itemTarget: Vector2D, type: WidgetCategory, isPointer?: boolean) {
+    const points: Vector2D[] = [];
     let source;
     if (type === WidgetCategory.Transform) {
       source = {x: itemSource.x + 80, y: itemSource.y + 40};
@@ -134,16 +134,16 @@ class FlowCanvas extends React.PureComponent<FlowCanvasProps, FlowCanvasState> {
 
     points.push({x: source.x, y: source.y});
     if (Math.abs(source.y - target.y) > 5) {
-      const breakPoint1: Point = {x: source.x + (target.x - source.x) / 2, y: source.y};
-      const breakPoint2: Point = {x: source.x + (target.x - source.x) / 2, y: target.y};
+      const breakPoint1: Vector2D = {x: source.x + (target.x - source.x) / 2, y: source.y};
+      const breakPoint2: Vector2D = {x: source.x + (target.x - source.x) / 2, y: target.y};
       points.push(breakPoint1, breakPoint2);
     }
     points.push(target);
     return points;
   }
 
-  private getDestinationDetails = (destinations: string[]): Array<{ id: string, point: Point }> => {
-    const destinationDetails: Array<{ id: string, point: Point }> = [];
+  private getDestinationDetails = (destinations: string[]): Array<{ id: string, point: Vector2D }> => {
+    const destinationDetails: Array<{ id: string, point: Vector2D }> = [];
     const {widgets} = this.props;
 
     destinations.map((widgetId => {

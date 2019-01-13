@@ -78,20 +78,20 @@ export default class FileImport extends React.Component<FileImportProps, FileImp
       console.log('100 rows', await fileReader.read(25, 50));
       console.log('100 rows', await fileReader.read(50, 75));
       console.log('100 rows', await fileReader.read(75, 100));
-      console.log('100 rows', await fileReader.read(2000, 2100));console.log('100 rows', await fileReader.read(1500, 1550));
+      console.log('100 rows', await fileReader.read(2000, 2100)); console.log('100 rows', await fileReader.read(1500, 1550));
       console.log('100 rows', await fileReader.read(25, 50));
       console.log('100 rows', await fileReader.read(50, 75));
       console.log('100 rows', await fileReader.read(75, 100));
-      console.log('100 rows', await fileReader.read(2000, 2100));console.log('100 rows', await fileReader.read(1500, 1550));
+      console.log('100 rows', await fileReader.read(2000, 2100)); console.log('100 rows', await fileReader.read(1500, 1550));
       console.log('100 rows', await fileReader.read(25, 50));
       console.log('100 rows', await fileReader.read(50, 75));
       console.log('100 rows', await fileReader.read(75, 100));
-      console.log('100 rows', await fileReader.read(2000, 2100));console.log('100 rows', await fileReader.read(1500, 1550));
+      console.log('100 rows', await fileReader.read(2000, 2100)); console.log('100 rows', await fileReader.read(1500, 1550));
       console.log('100 rows', await fileReader.read(25, 50));
       console.log('100 rows', await fileReader.read(50, 75));
       console.log('100 rows', await fileReader.read(75, 100));
       console.log('100 rows', await fileReader.read(4500, 4600));
-      console.timeEnd('table')
+      console.timeEnd('table');
 
     });
 

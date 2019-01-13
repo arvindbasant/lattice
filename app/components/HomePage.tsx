@@ -1,5 +1,5 @@
 import * as React from 'react';
-import "reflect-metadata";
+import 'reflect-metadata';
 // import connection from '../data-access';
 // import { createConnection } from 'typeorm/browser';
 // import { User } from '../data-access/entity/User';

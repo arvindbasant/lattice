@@ -50,7 +50,7 @@ class FlowTarget extends React.Component<FlowTargetProps, {}> {
   }
 
 // ref forwarding
-//https://github.com/react-dnd/react-dnd/issues/998
+// https://github.com/react-dnd/react-dnd/issues/998
   public render() {
     const {connectDropTarget} = this.props;
     // console.log(this.props.widgets);

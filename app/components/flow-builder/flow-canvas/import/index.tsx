@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Point, ImportWidget } from '../../../../store/flow/flow-types';
+import { Vector2D, ImportWidget } from '../../../../store/flow/flow-types';
 import Draggable, { DraggableData } from 'react-draggable';
 import { Dispatch } from 'redux';
 import { FlowActions, FLOW_ACTIONS } from '../../../../store/flow/flow-actions';
@@ -7,13 +7,13 @@ import { ImportOptionRenderer } from './import-option-renderer';
 
 interface ImportWidgetProps {
   widget: ImportWidget;
-  drawLine: (widget: ImportWidget, pointer: Point, isDrawing: boolean) => void;
+  drawLine: (widget: ImportWidget, pointer: Vector2D, isDrawing: boolean) => void;
   drawn: boolean;
   dispatch: Dispatch<FlowActions>;
 }
 
 interface ImportWidgetState {
-  pointer: Point;
+  pointer: Vector2D;
 }
 
 class Import extends React.PureComponent<ImportWidgetProps, ImportWidgetState> {
@@ -76,7 +76,7 @@ class Import extends React.PureComponent<ImportWidgetProps, ImportWidgetState> {
         return {
           pointer: {x: data.x, y: data.y},
         };
-      }, () => {
+      },            () => {
         this.props.drawLine(this.props.widget, this.state.pointer, true);
       });
     } else {

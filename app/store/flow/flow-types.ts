@@ -3,13 +3,13 @@ import { getRandomString } from '../../utils';
 export type fileType = 'csv' | 'tsv' | 'json' | 'unknown';
 export type colType = 'boolean' | 'string' | 'number' | 'datetime' | 'decimal';
 
-export interface Point {
+export interface Vector2D {
   x: number;
   y: number;
 }
 
 export interface WidgetRect {
-  point: Point;
+  point: Vector2D;
   height: number;
   width: number;
 }
