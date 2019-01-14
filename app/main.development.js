@@ -44,7 +44,10 @@ app.on('ready', () =>
         width: 1440,
         height: 900
       });
-      mainWindow.loadURL(`file://${__dirname}/app.html`);
+      setTimeout(() => {
+        mainWindow.loadURL(`file://${__dirname}/app.html`);
+      }, 2000);
+      // mainWindow.loadURL(`file://${__dirname}/app.html`);
       mainWindow.webContents.on('did-finish-load', () => {
         mainWindow.show();
         mainWindow.focus();
@@ -55,7 +58,7 @@ app.on('ready', () =>
       });
 
       if (process.env.NODE_ENV === 'development') {
-        mainWindow.openDevTools();
+        mainWindow.webContents.openDevTools({ detach: false });
         mainWindow.webContents.on('context-menu', (e, props) => {
           const { x, y } = props;
 

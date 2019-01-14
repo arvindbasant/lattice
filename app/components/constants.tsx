@@ -1,73 +1,72 @@
-import { WidgetCategory } from '../store/flow/flow-types';
 
-export const FLOW_SOURCE_TYPES = [
+export const FLOW_SOURCE_TYPES: Array<{discriminator: 'IMPORT_WIDGET' | 'TRANSFORM_WIDGET' | 'PERSIST_WIDGET', name: string, icon: string}> = [
     {
-      category: WidgetCategory.Import,
+      discriminator: 'IMPORT_WIDGET',
       name: 'file',
       icon: 'file'
     },
     {
-      category: WidgetCategory.Import,
+      discriminator: 'IMPORT_WIDGET',
       name: 'json api',
       icon: 'global'
     },
     {
-      category: WidgetCategory.Import,
+      discriminator: 'IMPORT_WIDGET',
       name: 'sql',
       icon: 'database'
     },
     {
-      category: WidgetCategory.Import,
+      discriminator: 'IMPORT_WIDGET',
       name: 'salesforce',
       icon: 'cloud'
     },
     {
-      category: WidgetCategory.Import,
+      discriminator: 'IMPORT_WIDGET',
       name: 'dropbox',
       icon: 'dropbox'
     },
     {
-      category: WidgetCategory.Transform,
+      discriminator: 'TRANSFORM_WIDGET',
       name: 'filter',
       icon: 'filter'
     },
     {
-      category: WidgetCategory.Transform,
+      discriminator: 'TRANSFORM_WIDGET',
       name: 'reorder',
       icon: 'swap'
     },
     {
-      category: WidgetCategory.Transform,
+      discriminator: 'TRANSFORM_WIDGET',
       name: 'manage',
       icon: 'bars'
     },
     {
-      category: WidgetCategory.Transform,
+      discriminator: 'TRANSFORM_WIDGET',
       name: 'merge',
       icon: 'shrink'
     },
     {
-      category: WidgetCategory.Persist,
+      discriminator: 'PERSIST_WIDGET',
       name: 'download',
       icon: 'download'
     },
     {
-      category: WidgetCategory.Persist,
+      discriminator: 'PERSIST_WIDGET',
       name: 'sql',
       icon: 'database'
     },
     {
-      category: WidgetCategory.Persist,
+      discriminator: 'PERSIST_WIDGET',
       name: 'salesforce',
       icon: 'cloud'
     },
     {
-      category: WidgetCategory.Persist,
+      discriminator: 'PERSIST_WIDGET',
       name: 'dropbox',
       icon: 'dropbox'
     },
     {
-      category: WidgetCategory.Persist,
+      discriminator: 'PERSIST_WIDGET',
       name: 'live',
       icon: 'play-circle'
     }

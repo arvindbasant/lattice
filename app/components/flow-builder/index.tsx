@@ -4,7 +4,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import { FLOW_ACTIONS, FlowActions } from '../../store/flow/flow-actions';
-import { FlowState, WidgetCategory, AnyWidget } from '../../store/flow/flow-types';
+import { FlowState, AnyWidget, DEFAULT_WIDGET_STATUS } from '../../store/flow/flow-types';
 import { ApplicationState } from '../../store/types';
 import FlowTarget from './flow-target/index';
 import FlowSource from './flow-source/index';
@@ -43,16 +43,18 @@ class FlowBuilder extends React.Component<FlowProps, any> {
     );
   }
 
-  private handleDrop({item, pos}: any) {
+  private handleDrop({ item, pos }: any) {
     const widgetId: string = getRandomString();
     const widget: AnyWidget = {
       id: widgetId,
       name: item.name,
-      category: item.category,
-      widgetRect: item.category === WidgetCategory.Transform ?
+      // category: item.category,
+      widgetRect: item.discriminator === 'TRANSFORM_WIDGET' ?
         { point: { x: pos.x - 71 - 40, y: pos.y - 88 - 40 }, height: 40, width: 40 } :
         { point: { x: pos.x - 71 - 60, y: pos.y - 88 - 25 }, height: 50, width: 120 },
-      destinations: []
+      destinations: [],
+      discriminator: item.discriminator,
+      status: DEFAULT_WIDGET_STATUS
     };
     this.props.dispatch(FLOW_ACTIONS.setFlow({ ...widget }));
   }

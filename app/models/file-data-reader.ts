@@ -2,16 +2,18 @@ import { FileDataSource } from '../store/flow/flow-types';
 import { createReadStream } from 'fs';
 import * as readline from 'readline';
 import * as parse from 'csv-parse/lib/sync';
+import { DataReader } from './data-reader';
 
 export interface ReadIndex {
   start: { id: number, index: number } | null;
   end: { id: number, index: number } | null;
 }
 
-export default class FileDataReader {
+export default class FileDataReader extends DataReader {
   private readonly fileDataSource: FileDataSource;
 
   constructor(fileDataSource: FileDataSource) {
+    super();
     this.fileDataSource = fileDataSource;
   }
 
@@ -24,9 +26,9 @@ export default class FileDataReader {
           // both in same chunk
           let chunkStart = readIndex.start.index;
           let pushData: boolean = false;
-          const {chunks, path} = this.fileDataSource;
+          const { chunks, path } = this.fileDataSource;
           const chunk = chunks.get(readIndex.start.id)!;
-          const rStream = createReadStream(path, {start: chunk.startCursor, end: chunk.endCursor});
+          const rStream = createReadStream(path, { start: chunk.startCursor, end: chunk.endCursor });
           const rl = readline.createInterface(rStream);
           rl.on('line', line => {
             if (line) {
@@ -38,7 +40,7 @@ export default class FileDataReader {
                 rl.emit('close');
               }
               if (pushData) {
-                data.push(parse(line, {delimiter: ','})[0]);
+                data.push(parse(line, { delimiter: ',' })[0]);
               }
               chunkStart++;
             }
@@ -55,7 +57,7 @@ export default class FileDataReader {
     const allChunks = this.fileDataSource.chunks;
     let startIndex = 0;
     let endIndex = 0; // exclusive
-    const readIndex: ReadIndex = {start: null, end: null};
+    const readIndex: ReadIndex = { start: null, end: null };
 
     for (let i = 0; i < allChunks.size; i++) {
       if (readIndex.start !== null && readIndex.end !== null) {
@@ -65,10 +67,10 @@ export default class FileDataReader {
       startIndex = endIndex;
       endIndex += rows;
       if (readIndex.start === null && start < endIndex) {
-        readIndex.start = {id: i, index: startIndex};
+        readIndex.start = { id: i, index: startIndex };
       }
       if (readIndex.end === null && end < endIndex) {
-        readIndex.end = {id: i, index: endIndex};
+        readIndex.end = { id: i, index: endIndex };
       }
     }
     return readIndex;

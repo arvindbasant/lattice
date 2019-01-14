@@ -27,13 +27,6 @@ module.exports = merge(baseConfig, {
   },
 
   module: {
-    // preLoaders: [
-    //   {
-    //     test: /\.js$/,
-    //     loader: 'eslint-loader',
-    //     exclude: /node_modules/
-    //   }
-    // ],
     rules: [
       {
         test: /\.global\.css$/,
@@ -48,10 +41,6 @@ module.exports = merge(baseConfig, {
             }
           }
         ]
-        // rules: [
-        //   'style-loader',
-        //   'css-loader?sourceMap'
-        // ]
       },
 
       {
@@ -70,10 +59,6 @@ module.exports = merge(baseConfig, {
             }
           }
         ]
-        // rules: [
-        //   'style-loader',
-        //   'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-        // ]
       },
 
      // SASS support - compile all .global.scss files and pipe it to style.css
@@ -215,7 +200,7 @@ module.exports = merge(baseConfig, {
     before() {
       if (process.env.START_HOT) {
         console.log('Starting Main Process...');
-        spawn('npm', ['run', 'start-main-dev'], {
+        spawn('npm', ['run', 'dev'], {
           shell: true,
           env: process.env,
           stdio: 'inherit'

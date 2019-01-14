@@ -3,10 +3,9 @@ import { ConnectDragPreview, ConnectDragSource, DragSource, DragSourceConnector,
 import { Icon, Tooltip } from 'antd';
 
 import * as styles from './source-item.scss';
-import { WidgetCategory } from '../../../store/flow/flow-types';
 
 interface FlowSourceProps {
-  category: WidgetCategory;
+  discriminator: 'IMPORT_WIDGET' | 'TRANSFORM_WIDGET' | 'PERSIST_WIDGET';
   name: string;
   icon: string;
   onDrop: any;
@@ -21,7 +20,7 @@ interface SourceProps {
 type Props = FlowSourceProps & SourceProps;
 const source: DragSourceSpec<FlowSourceProps, {}> = {
   beginDrag(props: FlowSourceProps) {
-    return {name: props.name, category: props.category};
+    return {name: props.name, discriminator: props.discriminator};
   },
 
   endDrag(props: FlowSourceProps, monitor: DragSourceMonitor) {

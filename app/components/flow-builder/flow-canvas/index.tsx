@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Dispatch } from 'redux';
 import { FlowActions, FLOW_ACTIONS } from '../../../store/flow/flow-actions';
-import { Vector2D, Widget, WidgetCategory, WidgetRect } from '../../../store/flow/flow-types';
+import { Vector2D, WidgetRect, AnyWidget } from '../../../store/flow/flow-types';
 import Import from './import';
 import { FlowPath } from './flow-path';
 import Persist from './persist';
 import Transform from './transform';
 
 interface FlowCanvasProps {
-  widgets: Widget[];
+  widgets: AnyWidget[];
   dispatch: Dispatch<FlowActions>;
 }
 
@@ -34,12 +34,12 @@ class FlowCanvas extends React.PureComponent<FlowCanvasProps, FlowCanvasState> {
   public render() {
     const {widgets} = this.props;
     const {drawingLine, points} = this.state;
-    const allDestinations = widgets.map((item: Widget) => {
+    const allDestinations = widgets.map((item: AnyWidget) => {
       const source = item.widgetRect.point;
       const destinations: Array<{ id: string, point: Vector2D }> = this.getDestinationDetails(item.destinations);
       return destinations.map((detail: { id: string, point: Vector2D }) => {
         return (
-          <FlowPath key={detail.id} points={this.getPoints(source, detail.point, item.category)} r={5}/>
+          <FlowPath key={detail.id} points={this.getPoints(source, detail.point, item.discriminator)} r={5}/>
         );
       });
     });
@@ -50,8 +50,8 @@ class FlowCanvas extends React.PureComponent<FlowCanvasProps, FlowCanvasState> {
           {drawingLine && <FlowPath key={'FHDGHJ7983JHDSJD88'} points={points} r={5}/>}
         </svg>
         {
-          widgets.map((item: Widget, i: number) => {
-              if (item.category === WidgetCategory.Import) {
+          widgets.map((item: AnyWidget, i: number) => {
+              if (item.discriminator === 'IMPORT_WIDGET') {
                 return (
                   <Import
                     key={i}
@@ -62,7 +62,7 @@ class FlowCanvas extends React.PureComponent<FlowCanvasProps, FlowCanvasState> {
                   />
                 );
               }
-              if (item.category === WidgetCategory.Transform) {
+              if (item.discriminator === 'TRANSFORM_WIDGET') {
                 return (
                   <Transform key={i} widget={item} drawLine={this.drawLine} drawn={this.state.drawn} dispatch={this.props.dispatch}/>
                 );
@@ -77,23 +77,23 @@ class FlowCanvas extends React.PureComponent<FlowCanvasProps, FlowCanvasState> {
     );
   }
 
-  public drawLine(widget: Widget, pointer: Vector2D, isDrawing: boolean) {
+  public drawLine(widget: AnyWidget, pointer: Vector2D, isDrawing: boolean) {
     this.setState(() => {
       return {
         drawingLine: isDrawing,
-        points: this.getPoints(widget.widgetRect.point, pointer, widget.category, true),
+        points: this.getPoints(widget.widgetRect.point, pointer, widget.discriminator, true),
       };
     },            () => {
       this.drawLineOnCollision(widget, pointer);
     });
   }
 
-  private drawLineOnCollision(sourceWidget: Widget, pointer: Vector2D) {
+  private drawLineOnCollision(sourceWidget: AnyWidget, pointer: Vector2D) {
     const targetRect: WidgetRect = {point: pointer, width: 20, height: 20};
 
     const {widgets} = this.props;
 
-    widgets.forEach((currentWidget: Widget) => {
+    widgets.forEach((currentWidget: AnyWidget) => {
       if (this.hasIntersection(currentWidget.widgetRect, targetRect)) {
 
         // const sourceWidget: Widget = widgets!.find(widget => widget.id === widgetId)!;
@@ -101,7 +101,7 @@ class FlowCanvas extends React.PureComponent<FlowCanvasProps, FlowCanvasState> {
           const updatedDestinations: string[] = sourceWidget.destinations;
           updatedDestinations.push(currentWidget.id);
 
-          const updatedWidget: Widget = {...sourceWidget, destinations: updatedDestinations};
+          const updatedWidget: AnyWidget = {...sourceWidget, destinations: updatedDestinations};
           this.props.dispatch(FLOW_ACTIONS.updateFlow({...updatedWidget}));
         }
       }
@@ -117,10 +117,10 @@ class FlowCanvas extends React.PureComponent<FlowCanvasProps, FlowCanvasState> {
     );
   }
 
-  private getPoints(itemSource: Vector2D, itemTarget: Vector2D, type: WidgetCategory, isPointer?: boolean) {
+  private getPoints(itemSource: Vector2D, itemTarget: Vector2D, type: 'IMPORT_WIDGET' | 'TRANSFORM_WIDGET' | 'PERSIST_WIDGET', isPointer?: boolean) {
     const points: Vector2D[] = [];
     let source;
-    if (type === WidgetCategory.Transform) {
+    if (type === 'TRANSFORM_WIDGET') {
       source = {x: itemSource.x + 80, y: itemSource.y + 40};
     } else {
       source = {x: itemSource.x + 120, y: itemSource.y + 25};
@@ -147,14 +147,14 @@ class FlowCanvas extends React.PureComponent<FlowCanvasProps, FlowCanvasState> {
     const {widgets} = this.props;
 
     destinations.map((widgetId => {
-      const destinationWidget: Widget = widgets.find(widget => widget.id === widgetId)!;
-      if (destinationWidget.category === WidgetCategory.Persist) {
+      const destinationWidget: AnyWidget = widgets.find(widget => widget.id === widgetId)!;
+      if (destinationWidget.discriminator === 'PERSIST_WIDGET') {
         destinationDetails.push({
           id: widgetId,
           point: {x: destinationWidget.widgetRect.point.x, y: destinationWidget.widgetRect.point.y + 25}
         });
       }
-      if (destinationWidget.category === WidgetCategory.Transform) {
+      if (destinationWidget.discriminator === 'TRANSFORM_WIDGET') {
         destinationDetails.push({
           id: widgetId,
           point: {x: destinationWidget.widgetRect.point.x, y: destinationWidget.widgetRect.point.y + 40}

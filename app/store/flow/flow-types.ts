@@ -14,29 +14,46 @@ export interface WidgetRect {
   width: number;
 }
 
-export enum WidgetCategory {
-  Import = 'import',
-  Transform = 'transform',
-  Persist = 'persist',
+export interface WidgetStatus {
+  active: boolean;
+  preview: boolean;
+  processing: boolean;
+  isValid: boolean;
 }
+
+export const DEFAULT_WIDGET_STATUS: WidgetStatus = {
+  active: false,
+  preview: false,
+  processing: false,
+  isValid: false
+};
 
 export interface Widget {
   id: string;
   name: string;
-  category: WidgetCategory;
+  // category: WidgetCategory;
   widgetRect: WidgetRect;
   destinations: string[];
+  status: WidgetStatus;
 }
 
+export type AnyDataSource = FileDataSource | SQLDataSource;
 export interface ImportWidget extends Widget {
-  dataSource?: FileDataSource | SQLDataSource;
+  discriminator: 'IMPORT_WIDGET';
+  dataSource?: AnyDataSource;
 }
 
 export interface TransformWidget extends Widget {
+  discriminator: 'TRANSFORM_WIDGET';
+
 }
 
 export interface PersistWidget extends Widget {
+  discriminator: 'PERSIST_WIDGET';
+
 }
+
+export type AnyWidget = ImportWidget | TransformWidget | PersistWidget;
 
 export interface ColDef {
   columnName: string;
@@ -63,6 +80,7 @@ export interface DataSource {
 }
 
 export interface FileDataSource extends DataSource {
+  discriminator: 'FILE_DATA_SOURCE';
   path: string;
   fileType: fileType;
   bufferSize: number;
@@ -78,6 +96,7 @@ export interface SQLConnectionDetails {
 }
 
 export interface SQLDataSource extends DataSource {
+  discriminator: 'SQL_DATA_SOURCE';
   connection: SQLConnectionDetails;
   rows: number;
   responseType: 'table' | 'json';
@@ -86,8 +105,6 @@ export interface SQLDataSource extends DataSource {
 export class Expression {
 
 }
-
-export type AnyWidget = ImportWidget | TransformWidget | PersistWidget;
 
 export interface FlowState {
   flowId: string;

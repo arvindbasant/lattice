@@ -2,14 +2,14 @@ import * as React from 'react';
 import { ConnectDropTarget, DropTarget, DropTargetConnector, DropTargetMonitor, DropTargetSpec } from 'react-dnd';
 import { Dispatch } from 'redux';
 import { FlowActions } from '../../../store/flow/flow-actions';
-import { Widget } from '../../../store/flow/flow-types';
+import { AnyWidget } from '../../../store/flow/flow-types';
 import FlowCanvas from '../flow-canvas';
 import * as styles from './flow-target.scss';
 
 interface FlowTargetProps {
   connectDropTarget?: ConnectDropTarget;
   isOver?: boolean;
-  widgets: Widget[];
+  widgets: AnyWidget[];
   dispatch: Dispatch<FlowActions>;
 }
 

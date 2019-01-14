@@ -94,7 +94,7 @@ export class CSVFileProcessor extends FileProcessor {
           }).on('close', () => {
             chunks.set(i, {startCursor, endCursor, rows: chunkRows, colTypes});
             if (chunks.size === (points.length / 2)) {
-              fileDataSource = {path: this.filePath, fileType: getFileType(this.filePath), chunks, bufferSize: this.stats.size, rows: rowsCount, isValid: true, columns: this.constructColDef(fileHeader, chunks)};
+              fileDataSource = {discriminator: 'FILE_DATA_SOURCE', path: this.filePath, fileType: getFileType(this.filePath), chunks, bufferSize: this.stats.size, rows: rowsCount, isValid: true, columns: this.constructColDef(fileHeader, chunks)};
               resolve(fileDataSource);
               console.timeEnd(`process`);
             }
